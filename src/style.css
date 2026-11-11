@@ -1,0 +1,175 @@
+:root {
+  --bg: #17110d;
+  --phosphor: #e9eeff;
+  --dim: #9ea6c9;
+  --screen: #070a18;
+  --accent: #f5a524;
+  --osd: 'VT323', monospace;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--phosphor); font-family: var(--mono); overflow: hidden; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+body::after { /* soft vignette for a cozier room */
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(ellipse 75% 70% at 50% 48%, transparent 55%, rgba(12,6,2,.6) 100%);
+}
+.hint, .shelf, .note { z-index: 3; }
+.tv { z-index: 10; }
+
+.hint {
+  position: fixed; top: 18px; left: 16px; right: 16px; text-align: center;
+  font: 24px/1.1 var(--osd); letter-spacing: 0.05em; color: #f3e6d3;
+  text-shadow: 0 1px 8px rgba(0,0,0,.7);
+  pointer-events: none; transition: opacity 0.6s;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+.hint.gone { opacity: 0; animation: none; }
+@keyframes pulse { 50% { opacity: 0.45; } }
+
+/* ---------- tape shelf (keyboard, mobile, no-WebGL) ---------- */
+.shelf {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  width: max-content; max-width: calc(100% - 32px);
+}
+.shelf button {
+  border: 0; cursor: pointer; padding: 8px 14px 8px 22px;
+  font: 22px/1 var(--osd); letter-spacing: 0.04em;
+  background: linear-gradient(90deg, var(--stripe) 0 8px, #f1ebdc 8px);
+  color: #1b1b1f; border-radius: 2px;
+  box-shadow: 0 2px 0 #000, 0 6px 18px rgba(0,0,0,.5);
+  transition: transform .15s;
+}
+.shelf button:hover, .shelf button:focus-visible { transform: translateY(-3px); }
+.shelf button:focus-visible { outline: 2px solid var(--phosphor); outline-offset: 3px; }
+
+.no-webgl .hint { display: none; }
+.no-webgl .shelf { top: 50%; bottom: auto; transform: translate(-50%, -50%); flex-direction: column; }
+
+/* ---------- the TV ---------- */
+.tv { position: fixed; inset: 0; background: #000; opacity: 0; transition: opacity .25s; }
+.tv.on { opacity: 1; }
+.tv-screen {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, #0d1430 0%, var(--screen) 70%);
+  border-radius: 3vmin;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: inset 0 0 12vmin rgba(0,0,0,.85);
+  text-shadow: 0 0 6px rgba(160,180,255,.35);
+  animation: flicker 6s infinite steps(1);
+}
+.tv-screen::after { /* scanlines */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,.035) 0 1px, transparent 1px 3px);
+  mix-blend-mode: overlay;
+}
+@keyframes flicker { 0%, 100% { filter: none; } 97% { filter: brightness(1.06); } 98% { filter: brightness(.96); } }
+@media (prefers-reduced-motion: reduce) { .tv-screen { animation: none; } .hint { animation: none; } }
+
+.osd {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 18px clamp(16px, 4vw, 48px);
+  font: 30px/1 var(--osd); letter-spacing: .05em;
+}
+.osd-title { flex: 1; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.osd-eject {
+  background: none; border: 2px solid currentColor; padding: 4px 12px;
+  font: 26px/1 var(--osd); cursor: pointer;
+}
+.osd-eject:hover, .osd-eject:focus-visible { background: var(--phosphor); color: var(--screen); text-shadow: none; outline: none; }
+
+.tv-content { flex: 1; overflow-y: auto; padding: 8px clamp(16px, 4vw, 48px) 64px; scrollbar-color: var(--dim) transparent; }
+
+/* ---------- case studies ---------- */
+.case { max-width: 960px; margin: 0 auto; line-height: 1.65; font-size: 16px; }
+.case h1 { font: clamp(56px, 9vw, 104px)/.95 var(--osd); margin: 4px 0 16px; color: var(--accent); text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 50%, transparent); }
+.case h2 { font: 34px/1 var(--osd); margin: 40px 0 8px; letter-spacing: .04em; }
+.eyebrow { font: 24px/1 var(--osd); color: var(--dim); margin: 16px 0 0; letter-spacing: .08em; }
+.lede { font-size: 19px; max-width: 70ch; color: var(--phosphor); }
+.case p, .case li { color: #cfd5ee; max-width: 72ch; }
+.case strong { color: var(--phosphor); }
+.case code { color: var(--accent); }
+.case ul { padding-left: 1.2em; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 40px; }
+
+.demo { margin: 32px 0; }
+.demo iframe {
+  display: block; width: 100%; height: min(78vh, 720px); min-height: 520px;
+  border: 2px solid #2a3157; border-radius: 6px; background: #0a0c14;
+}
+.demo-note { font-size: 13px; color: var(--dim); margin-top: 8px; }
+.demo-placeholder {
+  display: grid; place-items: center; min-height: 220px;
+  border: 2px dashed #2a3157; border-radius: 6px; font: 30px var(--osd); color: var(--dim);
+}
+
+.flow { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; counter-reset: step; }
+.flow li {
+  position: relative; border: 1px solid #2a3157; border-radius: 6px; padding: 12px 14px;
+  background: rgba(255,255,255,.02); display: flex; flex-direction: column;
+}
+.flow li strong { font: 24px/1.1 var(--osd); color: var(--accent); }
+.flow li span { font-size: 13px; color: var(--dim); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+.tags span { font: 20px/1 var(--osd); border: 1px solid #2a3157; padding: 4px 10px; border-radius: 99px; color: var(--dim); }
+
+.button, .links a {
+  display: inline-block; font: 26px/1 var(--osd); text-decoration: none;
+  border: 2px solid var(--accent); color: var(--accent); padding: 8px 16px; margin-top: 8px;
+}
+.button:hover, .links a:hover { background: var(--accent); color: var(--screen); text-shadow: none; }
+.links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+
+.playing:not(.no-webgl) .shelf { opacity: 0; pointer-events: none; }
+.shelf { transition: opacity .3s; }
+
+
+.resume-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+.resume-links .button { margin: 0; }
+.entry { margin: 0 0 20px; }
+.entry p { margin: 0; }
+.entry ul { margin: 6px 0 0; }
+.entry-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
+.entry-head strong { font: 26px/1.1 var(--osd); color: var(--accent); }
+.entry-head span, .entry-role { font-size: 14px; color: var(--dim) !important; }
+.skills { display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; margin: 0; }
+.skills dt { font: 22px/1.3 var(--osd); color: var(--accent); }
+.skills dd { margin: 0; color: #cfd5ee; }
+@media (max-width: 520px) { .skills { grid-template-columns: 1fr; } .skills dd { margin-bottom: 8px; } }
+
+/* On desktop the 3D tapes are the navigation; the button row only shows for keyboard users. */
+@media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+  body:not(.no-webgl) .shelf:not(:focus-within) { opacity: 0; pointer-events: none; }
+}
+
+/* ---------- easter-egg sticky note ---------- */
+.note {
+  position: fixed; width: min(280px, calc(100vw - 24px));
+  background: #fff3a8; color: #2a2418; padding: 14px 16px 12px;
+  font: 20px/1.25 'Permanent Marker', cursive;
+  box-shadow: 0 10px 24px rgba(0,0,0,.45);
+  transform: rotate(var(--tilt, -1deg));
+  animation: note-in .18s ease-out;
+}
+.note::before { /* tape strip */
+  content: ''; position: absolute; top: -10px; left: 50%; width: 70px; height: 20px;
+  transform: translateX(-50%) rotate(-3deg); background: rgba(255,255,255,.55);
+}
+.note p { margin: 0; }
+.note img { float: left; width: 64px; height: 64px; margin: 2px 12px 4px 0; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+.note a { display: inline-block; margin-top: 8px; font: 20px/1 var(--osd); color: #2a2418; }
+.note button, .note a { clear: both; }
+.note button {
+  margin-top: 10px; border: 2px solid #2a2418; background: none; cursor: pointer;
+  font: 20px/1 var(--osd); padding: 4px 10px;
+}
+.note button:hover { background: #2a2418; color: #fff3a8; }
+@keyframes note-in { from { opacity: 0; transform: translateY(6px) rotate(var(--tilt, -1deg)); } }
+@media (prefers-reduced-motion: reduce) { .note { animation: none; } }

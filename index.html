@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nash Carroll — Portfolio</title>
+  <meta name="description" content="Nash Carroll's portfolio. Pick a tape from the top shelf, put it in the VCR." />
+  <meta name="theme-color" content="#17110d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Permanent+Marker&family=Sacramento&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <canvas id="scene" aria-hidden="true"></canvas>
+
+  <div class="hint" id="hint">Pick a tape from the top shelf · poke around the side shelves</div>
+
+  <!-- Sticky note for the easter eggs (src/eggs.js). -->
+  <div class="note" id="note" role="status" hidden>
+    <img id="note-art" alt="" width="64" height="64" hidden />
+    <p id="note-text"></p>
+    <a id="note-link" target="_blank" rel="noopener" hidden>Open in Spotify ↗</a>
+    <button type="button" id="note-play">Play tape ▶</button>
+  </div>
+
+  <!-- Keyboard / mobile / no-WebGL navigation. Same actions as clicking a tape. -->
+  <nav class="shelf" aria-label="Tapes" id="shelf"></nav>
+
+  <!-- The "TV" overlay that takes over once the camera has zoomed into the screen. -->
+  <div class="tv" id="tv" role="dialog" aria-modal="true" aria-labelledby="tv-title" hidden>
+    <div class="tv-screen">
+      <header class="osd">
+        <span class="osd-play">▶ PLAY</span>
+        <span class="osd-title" id="tv-title"></span>
+        <span class="osd-counter" id="tv-counter" aria-hidden="true">0:00:00</span>
+        <button class="osd-eject" id="tv-eject" type="button">⏏ EJECT</button>
+      </header>
+      <main class="tv-content" id="tv-content"></main>
+    </div>
+  </div>
+
+  <!-- ============ TAPE CONTENT ============
+       Each <template id="tape-{id}"> is what plays when that tape goes in.
+       Tape labels/colors live in src/tapes.js. -->
+
+  <template id="tape-about">
+    <section class="case">
+      <p class="eyebrow">Tape 01 — About</p>
+      <h1>Hi, I'm Nash.</h1>
+      <p class="lede">
+        I'm a computer science grad student at the University of Georgia who builds software people
+        actually use, from a scoreboard app shipped at Lynx System Developers to VR and 3D tools for
+        healthcare education.
+      </p>
+
+      <div class="grid-2">
+        <div>
+          <h2>What I build</h2>
+          <ul>
+            <li><strong>Software that ships.</strong> Real users, real installers, real support.</li>
+            <li><strong>Real-time systems.</strong> Browsers driving LED video displays live.</li>
+            <li><strong>3D and XR.</strong> A digital-patient module and markerless motion capture at UGA's Virtual Experiences Lab.</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Off the clock</h2>
+          <ul>
+            <li>President of the Ballroom Dance Club at UGA (2024–2026)</li>
+            <li>Finishing a B.A. in Spanish alongside my CS degrees</li>
+            <li>Music, and collecting VHS tapes</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>Start here</h2>
+      <ul class="links">
+        <li><a href="#/scoreplus">ScorePlus ▶</a></li>
+        <li><a href="#/cinja">Cinema Ninja ▶</a></li>
+        <li><a href="#/resume">Resume ▶</a></li>
+      </ul>
+    </section>
+  </template>
+
+  <template id="tape-scoreplus">
+    <section class="case">
+      <p class="eyebrow">Tape 02 — Lynx System Developers · Summer 2024</p>
+      <h1>ScorePlus</h1>
+      <p class="lede">
+        A browser-based control panel for LED stadium video displays. Operators run the game clock,
+        scores and team colors from a laptop, and the board updates live. I built it as the sole
+        developer during my internship, and it shipped to clients who purchased the scoreboards.
+      </p>
+
+      <div class="demo">
+        <iframe src="/demos/scoreplus/index.html" title="ScorePlus interactive demo" loading="lazy"></iframe>
+        <p class="demo-note">
+          Interactive recreation. The production code is proprietary, so this demo was rebuilt from
+          scratch to run entirely in your browser. The real app sends this state to the physical
+          display.
+          <a href="/demos/scoreplus/index.html" target="_blank" rel="noopener">Open full screen ↗</a>
+        </p>
+      </div>
+
+      <h2>The problem</h2>
+      <p>
+        Customers buying Lynx LED displays needed a simple way to run them during a game across
+        several sports, from one browser window and without training on the display software.
+      </p>
+
+      <h2>How it works</h2>
+      <ol class="flow" aria-label="System architecture">
+        <li><strong>Operator UI</strong><span>Browser on the scorer's laptop</span></li>
+        <li><strong>Node + Express</strong><span>Socket.io keeps every open panel in sync</span></li>
+        <li><strong>Lynx scripting</strong><span>State is turned into commands in Lynx's proprietary display language</span></li>
+        <li><strong>LED display</strong><span>Football, soccer, basketball, cross-country</span></li>
+      </ol>
+
+      <h2>Decisions I'm proud of</h2>
+      <ul>
+        <li><strong>Server owns the clock.</strong> The game state lives on the Node process and is
+          persisted, so a refreshed or closed browser tab never loses the score.</li>
+        <li><strong>One-click Windows installer.</strong> NSIS package that bundles the Node runtime,
+          so non-technical clients install it offline without touching a terminal.</li>
+        <li><strong>Per-sport modes.</strong> Count-up vs. count-down clocks, periods vs. halves, and a
+          cross-country timing mode share one UI.</li>
+      </ul>
+
+      <h2>My role</h2>
+      <p>
+        Designed, built, packaged and supported the app in production as the sole designer and
+        engineer. I partnered with product managers to define scope, prioritize features and prepare
+        it for release.
+      </p>
+
+      <p class="tags"><span>Node.js</span><span>Express</span><span>Socket.io</span><span>Handlebars</span><span>TCP</span><span>NSIS</span></p>
+    </section>
+  </template>
+
+  <template id="tape-cinja">
+    <section class="case">
+      <p class="eyebrow">Tape 03 — Team project · Summer 2026</p>
+      <h1>Cinema Ninja</h1>
+      <p class="lede">
+        A full-stack movie ticket booking system: browse and search movies, pick a showtime, choose
+        seats on a live seat map, and check out. Includes an admin portal for movies and showtimes.
+      </p>
+
+      <!-- TODO: swap for the live demo once it exists -->
+      <div class="demo demo-placeholder">
+        <p>Live demo coming soon.</p>
+      </div>
+
+      <h2>My role</h2>
+      <p>
+        I led front-end development of the ticket-purchasing flow (showtime, ticket counts, seat map,
+        checkout) and contributed to the account, home and search interfaces. We coordinated the
+        five-person team through Jira and GitHub. Built with Chloe Malimban, Ido Niv, Joshua Lumogdang
+        and Abhinav Aravind for CSCI 4050 Software Engineering.
+      </p>
+
+      <h2>Highlights</h2>
+      <ul>
+        <li>Seat map with real-time availability, capped to the number of tickets chosen</li>
+        <li>Guests can browse and pick seats; login is only required at checkout</li>
+        <li>Showtime scheduling with conflict detection per showroom, date and time</li>
+        <li>Builder pattern (<code>BookingBuilder</code>) and Facade (<code>CheckoutFacade</code>) in the booking pipeline</li>
+        <li>Account management: saved cards, addresses, favorites, order history, password reset by email</li>
+      </ul>
+
+      <p class="tags"><span>Java 21</span><span>Spring Boot</span><span>MongoDB</span><span>Vanilla JS</span><span>Jira</span></p>
+      <p><a class="button" href="https://github.com/solgernash/cinja-box-office" target="_blank" rel="noopener">View the code on GitHub ↗</a></p>
+    </section>
+  </template>
+
+  <template id="tape-resume">
+    <section class="case resume">
+      <p class="eyebrow">Tape 04 — The full tape</p>
+      <h1>Resume</h1>
+      <p class="resume-links">
+        <a class="button" href="/resume.pdf" download="Nash_Carroll_Resume.pdf">⬇ Download PDF</a>
+        <a href="mailto:Ethan.Carroll@UGA.edu">Ethan.Carroll@UGA.edu</a>
+        <a href="https://www.linkedin.com/in/ethan-nash-carroll" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/solgernash" target="_blank" rel="noopener">GitHub</a>
+      </p>
+
+      <h2>Education</h2>
+      <div class="entry">
+        <p class="entry-head"><strong>University of Georgia</strong><span>Athens, GA</span></p>
+        <ul>
+          <li>M.S. in Computer Science, expected May 2027</li>
+          <li>B.S. in Computer Science, May 2025</li>
+          <li>B.A. in Spanish Interdisciplinary Studies, expected May 2027</li>
+          <li>Honors: CURO Scholar, Dean's List, Georgia Commitment Scholar</li>
+        </ul>
+      </div>
+
+      <h2>Experience</h2>
+      <div class="entry">
+        <p class="entry-head"><strong>Virtual Experiences Lab</strong><span>Jun 2025 – Present</span></p>
+        <p class="entry-role">Graduate Assistant</p>
+        <ul>
+          <li>Develop an interactive digital-patient module that enables users to assess and diagnose a simulated patient.</li>
+          <li>Built a SAM 3D markerless motion-capture workflow to reconstruct human movement in a virtual environment.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <p class="entry-head"><strong>UGA College of Pharmacy</strong><span>Jun 2025 – Jun 2026</span></p>
+        <p class="entry-role">Graduate Assistant for Immersive Technology</p>
+        <ul>
+          <li>Built a device-ID asset-tracking system to improve equipment inventory and accountability.</li>
+          <li>Supported 900+ students and helped faculty adopt VR/AR tools through training resources, technical guides, and hands-on assistance.</li>
+          <li>Managed Meta Quest 3 headset maintenance, inventory, storage, and classroom deployment.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <p class="entry-head"><strong>Lynx System Developers</strong><span>May 2024 – Aug 2024</span></p>
+        <p class="entry-role">Software Development Intern · <a href="#/scoreplus">Play the ScorePlus tape ▶</a></p>
+        <ul>
+          <li>Built ScorePlus, a deployment-ready Node.js and Socket.io browser application with real-time scoreboard updates, as the sole developer.</li>
+          <li>Integrated Lynx's proprietary scripting language to control LED video displays across multiple sports workflows.</li>
+          <li>Partnered with product managers to define scope, prioritize features, and prepare ScorePlus for release.</li>
+        </ul>
+      </div>
+
+      <h2>Projects</h2>
+      <div class="entry">
+        <p class="entry-head"><strong>Movie Theater Ticketing Platform</strong><span>Summer 2026</span></p>
+        <p class="entry-role"><a href="#/cinja">Play the Cinema Ninja tape ▶</a></p>
+        <ul>
+          <li>Led front-end development of the ticket-purchasing flow on a five-person software engineering course team; contributed to account, home, and search interfaces.</li>
+          <li>Built JavaScript interfaces integrated with a Spring Boot REST API and MongoDB; coordinated development through Jira and GitHub.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <p class="entry-head"><strong>Noble</strong><span>Aug 2022 – May 2023</span></p>
+        <ul>
+          <li>Implemented health, hitbox, start-menu, and pause-menu systems in C# for a Unity game built with UGA Game Builders Club members.</li>
+        </ul>
+      </div>
+
+      <h2>Leadership</h2>
+      <div class="entry">
+        <p class="entry-head"><strong>Ballroom Dance Club at UGA</strong><span>May 2024 – Jul 2026</span></p>
+        <p class="entry-role">President</p>
+        <ul>
+          <li>Grew monthly social media profile visits from 100 to 50,000 while managing club communications.</li>
+          <li>Organized two weekly lessons and coordinated additional sessions with alumni instructors.</li>
+        </ul>
+      </div>
+
+      <h2>Technical skills</h2>
+      <dl class="skills">
+        <dt>Languages</dt><dd>Java, C++, C#</dd>
+        <dt>Web</dt><dd>React, SvelteKit, Node.js, Express.js, Tailwind CSS, Bootstrap, Vite</dd>
+        <dt>3D and XR</dt><dd>Unity, Three.js, SAM 3D</dd>
+        <dt>Database</dt><dd>MongoDB</dd>
+        <dt>Tools</dt><dd>GitHub, Jira, Vercel, Cloudflare</dd>
+      </dl>
+    </section>
+  </template>
+
+  <template id="tape-contact">
+    <section class="case">
+      <p class="eyebrow">Tape 05 — Be kind, rewind</p>
+      <h1>Let's talk.</h1>
+      <p class="lede">
+        I'm finishing my M.S. in Computer Science at UGA (May 2027) and looking for software
+        engineering roles, especially full-stack, real-time and 3D/XR work.
+      </p>
+      <ul class="links">
+        <li><a href="mailto:Ethan.Carroll@UGA.edu">Email ↗</a></li>
+        <li><a href="https://www.linkedin.com/in/ethan-nash-carroll" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+        <li><a href="https://github.com/solgernash" target="_blank" rel="noopener">GitHub ↗</a></li>
+        <li><a href="#/resume">Resume tape ▶</a></li>
+        <li><a href="/resume.pdf" download="Nash_Carroll_Resume.pdf">Resume PDF ⬇</a></li>
+      </ul>
+    </section>
+  </template>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

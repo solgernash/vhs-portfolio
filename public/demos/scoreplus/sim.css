@@ -1,0 +1,60 @@
+:root {
+  --bg: #0a0c14; --panel: #121522; --line: #262b40; --text: #e7eaf6; --dim: #8e95b3;
+  --go: #30a46c; --stop: #e5484d; --primary: #3e8ed0;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.4 Inter, system-ui, sans-serif; }
+button, input { font: inherit; color: inherit; }
+
+.app { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, 1fr); gap: 16px; padding: 16px; min-height: 100vh; align-items: start; }
+@media (max-width: 860px) { .app { grid-template-columns: 1fr; } }
+
+.board-wrap { position: sticky; top: 16px; }
+@media (max-width: 860px) { .board-wrap { position: static; } }
+#board { width: 100%; height: auto; display: block; background: #050505; border: 10px solid #1b1b1d; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,.6), inset 0 0 0 1px #000; }
+.board-caption { color: var(--dim); font-size: 12px; margin: 8px 2px 0; }
+
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.panel-head strong { font-size: 18px; letter-spacing: .02em; }
+.conn { color: var(--dim); font-size: 12px; display: flex; align-items: center; gap: 6px; }
+.conn i { width: 8px; height: 8px; border-radius: 50%; background: var(--go); box-shadow: 0 0 8px var(--go); }
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+.tabs button { background: none; border: 0; padding: 8px 14px; cursor: pointer; color: var(--dim); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs button[aria-selected="true"] { color: var(--text); border-color: var(--primary); }
+
+fieldset { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 12px; padding: 8px 10px 10px; min-width: 0; }
+legend { color: var(--dim); font-size: 12px; padding: 0 4px; text-transform: uppercase; letter-spacing: .06em; }
+
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.seg span { display: block; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; }
+.seg input:checked + span { background: var(--primary); border-color: var(--primary); }
+.seg input:focus-visible + span { outline: 2px solid var(--text); outline-offset: 2px; }
+
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.btn { background: #1c2032; border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.btn:hover { border-color: var(--dim); }
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--primary); border-color: var(--primary); }
+.btn.go { background: var(--go); border-color: var(--go); }
+.btn.stop { background: var(--stop); border-color: var(--stop); }
+input:not([type]) , input[type="text"] { background: #0c0f1a; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+#clockInput { width: 80px; font-variant-numeric: tabular-nums; }
+
+.teams { display: grid; grid-template-columns: 1fr auto; gap: 8px 10px; margin-bottom: 12px; }
+.teams label { display: flex; flex-direction: column; gap: 4px; color: var(--dim); font-size: 12px; }
+.teams input:not([type="color"]) { text-transform: uppercase; }
+.teams input[type="color"] { width: 48px; height: 34px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; }
+
+.scores { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.score output { display: block; font: 40px/1.1 "Press Start 2P", monospace; text-align: center; margin: 8px 0 12px; }
+.pm { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+
+#autoplay { width: 100%; }
+
+.log summary { cursor: pointer; color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.log ol { list-style: none; margin: 8px 0 0; padding: 0; max-height: 150px; overflow: auto; font: 12px/1.6 ui-monospace, monospace; color: var(--dim); }
+.log li b { color: #5dffb0; font-weight: normal; }

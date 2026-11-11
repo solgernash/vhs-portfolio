@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ScorePlus Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="sim.css" />
+</head>
+<body>
+  <div class="app">
+    <section class="board-wrap" aria-label="Simulated LED scoreboard">
+      <canvas id="board" width="960" height="384" role="img" aria-label="Scoreboard"></canvas>
+      <p class="board-caption">Simulated LED scoreboard: in production this is a physical board fed over TCP.</p>
+    </section>
+
+    <section class="panel" aria-label="Operator control panel">
+      <header class="panel-head">
+        <strong>ScorePlus</strong><span class="conn"><i></i> Scoreboard connected (simulated)</span>
+      </header>
+
+      <div class="tabs" role="tablist">
+        <button role="tab" data-tab="setup">Setup</button>
+        <button role="tab" data-tab="operate" aria-selected="true">Operate</button>
+        <button role="tab" data-tab="settings">Settings</button>
+      </div>
+
+      <div class="tab" id="tab-setup" hidden>
+        <fieldset>
+          <legend>Sport</legend>
+          <div class="seg" id="sport">
+            <label><input type="radio" name="sport" value="Football" checked /><span>Football</span></label>
+            <label><input type="radio" name="sport" value="Soccer" /><span>Soccer</span></label>
+            <label><input type="radio" name="sport" value="Basketball" /><span>Basketball</span></label>
+            <label><input type="radio" name="sport" value="XC" /><span>Cross-country</span></label>
+          </div>
+        </fieldset>
+        <div class="teams">
+          <label>Home team <input id="homeName" maxlength="9" value="TIGERS" /></label>
+          <label class="color">Color <input type="color" id="homeColor" value="#f5a524" /></label>
+          <label>Away team <input id="awayName" maxlength="9" value="EAGLES" /></label>
+          <label class="color">Color <input type="color" id="awayColor" value="#3e8ed0" /></label>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="save">Save</button>
+          <button class="btn" id="resetGame">Reset game</button>
+        </div>
+      </div>
+
+      <div class="tab" id="tab-operate">
+        <fieldset id="periodSet">
+          <legend id="periodLegend">Quarter</legend>
+          <div class="seg" id="period">
+            <label><input type="radio" name="period" value="1" checked /><span>1</span></label>
+            <label><input type="radio" name="period" value="2" /><span>2</span></label>
+            <label><input type="radio" name="period" value="3" /><span>3</span></label>
+            <label><input type="radio" name="period" value="4" /><span>4</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Clock</legend>
+          <div class="row">
+            <input id="clockInput" value="15:00" inputmode="numeric" aria-label="Clock time (mm:ss)" size="6" />
+            <button class="btn" id="setClock">Set</button>
+            <button class="btn go" id="start">Start</button>
+            <button class="btn stop" id="stop">Stop</button>
+            <button class="btn" id="horn">Horn</button>
+          </div>
+        </fieldset>
+
+        <div class="scores">
+          <fieldset class="score" data-side="home">
+            <legend id="homeLegend">Home</legend>
+            <output id="homeScore">0</output>
+            <div class="pm">
+              <button class="btn" data-d="1">+1</button><button class="btn" data-d="2">+2</button><button class="btn" data-d="3">+3</button>
+              <button class="btn" data-d="-1">−1</button><button class="btn" data-d="-2">−2</button><button class="btn" data-d="-3">−3</button>
+            </div>
+          </fieldset>
+          <fieldset class="score" data-side="away">
+            <legend id="awayLegend">Away</legend>
+            <output id="awayScore">0</output>
+            <div class="pm">
+              <button class="btn" data-d="1">+1</button><button class="btn" data-d="2">+2</button><button class="btn" data-d="3">+3</button>
+              <button class="btn" data-d="-1">−1</button><button class="btn" data-d="-2">−2</button><button class="btn" data-d="-3">−3</button>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="tab" id="tab-settings" hidden>
+        <fieldset>
+          <legend>Clock direction</legend>
+          <div class="seg" id="direction">
+            <label><input type="radio" name="dir" value="down" checked /><span>Count down</span></label>
+            <label><input type="radio" name="dir" value="up" /><span>Count up</span></label>
+          </div>
+        </fieldset>
+        <button class="btn" id="autoplay">▶ Simulate a game</button>
+      </div>
+
+      <details class="log" open>
+        <summary>Updates sent to scoreboard</summary>
+        <ol id="log" aria-live="polite"></ol>
+      </details>
+    </section>
+  </div>
+  <script type="module" src="sim.js"></script>
+</body>
+</html>

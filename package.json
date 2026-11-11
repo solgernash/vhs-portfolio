@@ -1,0 +1,20 @@
+{
+  "name": "portfolio-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "preview:cf": "vite build && wrangler pages dev dist --compatibility-date=2026-05-01",
+    "spotify:auth": "node scripts/spotify-auth.mjs"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "vite": "5.4.11",
+    "wrangler": "4.86.0"
+  }
+}
