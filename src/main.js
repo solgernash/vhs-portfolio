@@ -21,6 +21,7 @@ const ejectBtn = document.getElementById('tv-eject');
 const note = document.getElementById('note');
 const noteText = document.getElementById('note-text');
 const notePlay = document.getElementById('note-play');
+const notePhoto = document.getElementById('note-photo');
 const noteArt = document.getElementById('note-art');
 const noteLink = document.getElementById('note-link');
 
@@ -132,6 +133,11 @@ function showNote(egg, screenPos) {
   noteAnchor = screenPos;
   noteText.textContent = egg.note;
   noteArt.hidden = noteLink.hidden = true;
+  notePhoto.hidden = !egg.image;
+  if (egg.image) {
+    notePhoto.src = egg.image;
+    notePhoto.alt = egg.alt ?? '';
+  }
   notePlay.hidden = !egg.tape;
   notePlay.onclick = () => play(egg.tape);
   note.style.setProperty('--tilt', `${(Math.random() - 0.5) * 6}deg`);
@@ -278,19 +284,31 @@ async function initScene() {
   // ----- screen / VCR state -----
   let blinkOn = true;
   let screenState = 'idle';
-  let vcrText = '12:00';
+  let vcrText = null; // null: the VCR shows the clock
+
+  // The viewer's local time (the browser's time zone), in their usual 12- or 24-hour style.
+  const hourOpts = new Intl.DateTimeFormat(undefined, { hour: 'numeric' }).resolvedOptions();
+  const twelveHour = hourOpts.hour12 ?? /h1[12]/.test(hourOpts.hourCycle ?? '');
+  function drawVcr() {
+    if (vcrText) return vcr.face.draw(vcrText);
+    const now = new Date(), h = now.getHours(), m = String(now.getMinutes()).padStart(2, '0');
+    const colon = now.getSeconds() % 2 ? ' ' : ':';
+    if (twelveHour) vcr.face.draw(`${h % 12 || 12}${colon}${m}`, true, h < 12 ? 'AM' : 'PM');
+    else vcr.face.draw(`${String(h).padStart(2, '0')}${colon}${m}`);
+  }
   function setScreen(state, title) {
     screenState = state;
     screen.draw(state, { title, blink: blinkOn });
     glow.color.set(state === 'idle' ? '#5b7bff' : '#9aa4c8');
   }
   setScreen('idle');
-  vcr.face.draw(vcrText);
+  drawVcr();
+  // 500 ms divides a second evenly, so the clock's colon blinks in step with real seconds.
   setInterval(() => {
     blinkOn = !blinkOn;
     if (screenState === 'idle') screen.draw('idle', { blink: blinkOn });
-    vcr.face.draw(vcrText, vcrText !== '12:00' || blinkOn);
-  }, 600);
+    drawVcr();
+  }, 500);
 
   // ----- camera framing -----
   const homeCam = new THREE.Vector3();
@@ -357,7 +375,7 @@ async function initScene() {
     await moveTape(mesh, inSlot, upright, s, 0.35 * k);
     mesh.visible = false;
     vcrText = 'PLAY ▶';
-    vcr.face.draw(vcrText);
+    drawVcr();
     screenMat.uniforms.staticAmt.value = 1;
     await wait(0.5 * k);
     setScreen('play', tape.title);
@@ -368,7 +386,7 @@ async function initScene() {
   async function remove(tape) {
     const mesh = tapes.get(tape.id);
     vcrText = 'EJECT';
-    vcr.face.draw(vcrText);
+    drawVcr();
     setScreen('idle');
     mesh.visible = true;
     await moveTape(mesh, atSlot, upright, s, 0.35 * D, easeOutCubic);
@@ -376,8 +394,8 @@ async function initScene() {
     await moveTape(mesh, pulledOut(home), upright, 1, 0.6 * D);
     await moveTape(mesh, home.pos, home.quat, 1, 0.4 * D);
     mesh.userData.state = 'shelf';
-    vcrText = '12:00';
-    vcr.face.draw(vcrText);
+    vcrText = null;
+    drawVcr();
   }
 
   async function zoomToScreen(instant) {

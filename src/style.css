@@ -9,6 +9,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; } /* keep `hidden` working on elements styled with display */
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--phosphor); font-family: var(--mono); overflow: hidden; }
 button { font: inherit; color: inherit; }
 a { color: inherit; }
@@ -163,6 +164,7 @@ body::after { /* soft vignette for a cozier room */
   transform: translateX(-50%) rotate(-3deg); background: rgba(255,255,255,.55);
 }
 .note p { margin: 0; }
+.note .note-photo { display: block; float: none; width: 100%; height: auto; margin: 0 0 10px; border: 6px solid #fff; }
 .note img { float: left; width: 64px; height: 64px; margin: 2px 12px 4px 0; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
 .note a { display: inline-block; margin-top: 8px; font: 20px/1 var(--osd); color: #2a2418; }
 .note button, .note a { clear: both; }

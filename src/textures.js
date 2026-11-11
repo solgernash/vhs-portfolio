@@ -93,16 +93,20 @@ export function makeVcrFace() {
   // Slot center as a fraction of the faceplate, used by the scene to aim tapes.
   const slot = { x: 0.36, y: 0.42, w: 0.4, h: 0.3 };
 
-  function draw(text, lit = true) {
+  // Brushed-metal streaks, fixed so the faceplate doesn't shimmer on every redraw.
+  const brush = Array.from({ length: Math.ceil(c.width / 3) }, () => Math.random() * 0.018);
+
+  // `badge` is a small indicator in the corner of the display, like AM/PM.
+  function draw(text, lit = true, badge = '') {
     const face = g.createLinearGradient(0, 0, 0, c.height);
     face.addColorStop(0, '#2a2a2e');
     face.addColorStop(1, '#161618');
     g.fillStyle = face;
     g.fillRect(0, 0, c.width, c.height);
-    for (let x = 0; x < c.width; x += 3) {
-      g.fillStyle = `rgba(255,255,255,${Math.random() * 0.018})`;
-      g.fillRect(x, 0, 1, c.height);
-    }
+    brush.forEach((a, i) => {
+      g.fillStyle = `rgba(255,255,255,${a})`;
+      g.fillRect(i * 3, 0, 1, c.height);
+    });
 
     const sx = (slot.x - slot.w / 2) * c.width, sy = (slot.y - slot.h / 2) * c.height;
     const sw = slot.w * c.width, sh = slot.h * c.height;
@@ -128,6 +132,11 @@ export function makeVcrFace() {
     g.shadowColor = '#5dffb0';
     g.shadowBlur = lit ? 14 : 0;
     g.fillText(text, dx + dw / 2, dy + dh / 2 + 3);
+    if (badge) {
+      g.font = '26px VT323, monospace';
+      g.textAlign = 'left';
+      g.fillText(badge, dx + 12, dy + 20);
+    }
     g.shadowBlur = 0;
     g.textAlign = 'left';
 
@@ -309,24 +318,59 @@ export function makeBookSpine(title, color, ink = '#f6efdf') {
 }
 
 // A tiny dot-matrix board for the side shelf.
-export function makeStraw() {
+// Hand-drawn-looking straw: short dark and light strokes over a warm base.
+function strawStrokes(g, count, stroke) {
+  for (let i = 0; i < count; i++) {
+    g.strokeStyle = Math.random() < 0.7 ? `rgba(150,98,24,${0.25 + Math.random() * 0.35})` : `rgba(255,240,185,${0.3 + Math.random() * 0.3})`;
+    g.lineWidth = 0.8 + Math.random() * 1.3;
+    g.beginPath();
+    stroke();
+    g.stroke();
+  }
+}
+
+export function makeStrawCrown() {
   const c = document.createElement('canvas');
   c.width = 512;
   c.height = 256;
   const g = c.getContext('2d');
-  g.fillStyle = '#e3bd62';
+  g.fillStyle = '#efc24f';
   g.fillRect(0, 0, c.width, c.height);
-  for (let y = 0; y < c.height; y += 6) {
-    g.fillStyle = y % 12 ? 'rgba(150,105,35,0.35)' : 'rgba(255,235,170,0.35)';
-    g.fillRect(0, y, c.width, 2);
-  }
-  for (let x = 0; x < c.width; x += 10) {
-    g.fillStyle = 'rgba(120,80,25,0.18)';
-    g.fillRect(x, 0, 2, c.height);
-  }
+  strawStrokes(g, 900, () => {
+    const x = Math.random() * c.width, y = Math.random() * c.height;
+    g.moveTo(x, y);
+    g.lineTo(x + (Math.random() - 0.5) * 3, y + 6 + Math.random() * 16);
+  });
   const t = canvasTexture(c);
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   return t;
+}
+
+// Brim texture in the ring's planar UVs: strokes radiate from the center.
+export function makeStrawBrim() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 512;
+  const g = c.getContext('2d');
+  g.fillStyle = '#eba73c';
+  g.fillRect(0, 0, 512, 512);
+  strawStrokes(g, 1400, () => {
+    const a = Math.random() * Math.PI * 2, r = 108 + Math.random() * 150, len = 8 + Math.random() * 18;
+    g.moveTo(256 + Math.cos(a) * r, 256 + Math.sin(a) * r);
+    g.lineTo(256 + Math.cos(a) * (r + len), 256 + Math.sin(a) * (r + len));
+  });
+  return canvasTexture(c);
+}
+
+export function makeVent() {
+  const c = document.createElement('canvas');
+  c.width = 340;
+  c.height = 248;
+  const g = c.getContext('2d');
+  g.fillStyle = '#5044a6';
+  g.fillRect(0, 0, c.width, c.height);
+  g.fillStyle = '#231d4d';
+  for (let y = 14; y < c.height - 10; y += 22) for (let x = 14; x < c.width - 10; x += 22) g.fillRect(x, y, 14, 14);
+  return canvasTexture(c);
 }
 
 // Face of an audio cassette: label strip, window and two reels.
@@ -373,30 +417,46 @@ export function makeCassette(title, sub, stripe) {
   return canvasTexture(c);
 }
 
-export function makePolaroid(caption) {
+// Instant-film card (portrait). Shows a sunset placeholder, then the photo once it loads.
+export function makePolaroid(caption, src) {
   const c = document.createElement('canvas');
-  c.width = 360;
-  c.height = 440;
+  c.width = 432;
+  c.height = 688;
   const g = c.getContext('2d');
+  const tex = canvasTexture(c);
+  const area = { x: 32, y: 48, w: 368, h: 496 };
+
   g.fillStyle = '#fbfaf6';
   g.fillRect(0, 0, c.width, c.height);
-  const sky = g.createLinearGradient(0, 24, 0, 344);
+  const sky = g.createLinearGradient(0, area.y, 0, area.y + area.h);
   sky.addColorStop(0, '#3b2b6e');
   sky.addColorStop(0.55, '#f2706b');
   sky.addColorStop(1, '#ffc46b');
   g.fillStyle = sky;
-  g.fillRect(24, 24, 312, 320);
-  g.fillStyle = '#ffe9a8';
-  g.beginPath();
-  g.arc(180, 250, 52, 0, Math.PI * 2);
-  g.fill();
-  g.fillStyle = '#2a1830';
-  g.fillRect(24, 270, 312, 74);
+  g.fillRect(area.x, area.y, area.w, area.h);
   g.fillStyle = '#33333a';
-  g.font = '40px "Permanent Marker", cursive';
+  g.font = '38px "Permanent Marker", cursive';
   g.textAlign = 'center';
-  g.fillText(caption, 180, 400);
-  return canvasTexture(c);
+  g.textBaseline = 'middle';
+  g.fillText(caption, c.width / 2, 616, c.width - 48);
+
+  if (src) {
+    const img = new Image();
+    img.onload = () => {
+      const s = Math.max(area.w / img.width, area.h / img.height), w = img.width * s, h = img.height * s;
+      g.save();
+      g.beginPath();
+      g.rect(area.x, area.y, area.w, area.h);
+      g.clip();
+      g.drawImage(img, area.x + (area.w - w) / 2, area.y + (area.h - h) / 2, w, h);
+      g.fillStyle = 'rgba(255,190,120,0.06)'; // a touch of instant-film warmth
+      g.fillRect(area.x, area.y, area.w, area.h);
+      g.restore();
+      tex.needsUpdate = true;
+    };
+    img.src = src;
+  }
+  return tex;
 }
 
 export function makeGrille() {
