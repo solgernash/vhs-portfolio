@@ -1,11 +1,20 @@
-// Cloudflare Pages Function: GET /api/now-playing
-// Returns what's playing on Spotify right now, or the last track played.
+// Cloudflare Worker: serves the built site from ./dist and answers GET /api/now-playing
+// with what's playing on Spotify right now, or the last track played.
 // Needs SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET and SPOTIFY_REFRESH_TOKEN
-// (locally in .dev.vars, in production as Cloudflare secrets; see scripts/spotify-auth.mjs).
+// (locally in .dev.vars, in production as Worker secrets; see scripts/spotify-auth.mjs).
 
 const CACHE_SECONDS = 30;
 
-export async function onRequestGet({ request, env, waitUntil }) {
+export default {
+  // Static files are served before this runs; only requests with no matching file reach it.
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (url.pathname === '/api/now-playing' && request.method === 'GET') return nowPlaying(request, env, ctx);
+    return env.ASSETS.fetch(request);
+  },
+};
+
+async function nowPlaying(request, env, ctx) {
   const cache = caches.default;
   const cacheKey = new Request(new URL('/api/now-playing', request.url));
   const hit = await cache.match(cacheKey);
@@ -19,7 +28,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
     return json({ error: 'unavailable' }, 502, 0);
   }
   const res = json(body, 200, CACHE_SECONDS);
-  waitUntil(cache.put(cacheKey, res.clone()));
+  ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }
 

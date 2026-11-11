@@ -19,25 +19,26 @@ A three.js entertainment center: project tapes on the top shelf, a CRT and VCR i
 
 Deep links: `/#/about`, `/#/scoreplus`, `/#/cinja`, `/#/resume`, `/#/contact` open that tape directly.
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare Worker)
 
-Connect the repo in Cloudflare Pages, or deploy from the CLI:
+The site is a Cloudflare Worker (`wrangler.jsonc`) that serves `dist/` and handles `/api/now-playing`
+in `worker/index.js`. With Workers Builds connected to this repo, every push to `main` deploys.
 
 - Build command: `npm run build`
-- Output directory: `dist`
+- Deploy command: `npx wrangler deploy`
 
-CLI alternative: `npm run build && npx wrangler pages deploy dist`
+CLI alternative: `npm run build && npx wrangler deploy`
 
 ## Spotify "now playing" (the mixtape on the left shelf)
 
-`functions/api/now-playing.js` is a Cloudflare Pages Function. It needs three secrets:
-`SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`.
+`worker/index.js` needs three secrets: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`.
 
 1. Create an app at https://developer.spotify.com/dashboard with the redirect URI
    `http://127.0.0.1:8888/callback` and the Web API enabled.
 2. `cp .dev.vars.example .dev.vars` and fill in the client ID and secret.
 3. `npm run spotify:auth` and approve in the browser. This writes the refresh token to `.dev.vars`.
-4. `npm run preview:cf` runs the site with the function at http://localhost:8788.
-5. In Cloudflare: Pages project → Settings → Variables and Secrets → add all three as secrets, then redeploy.
+4. `npm run preview:cf` runs the site and the Worker at http://localhost:8787.
+5. In Cloudflare: the Worker → Settings → **Variables and Secrets** (the runtime section, not the
+   one under Builds) → add all three as secrets.
 
 `.dev.vars` is gitignored. Never commit it.
