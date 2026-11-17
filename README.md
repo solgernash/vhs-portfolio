@@ -1,23 +1,43 @@
 # Portfolio
 
-A three.js entertainment center: project tapes on the top shelf, a CRT and VCR in the middle, easter eggs on the side shelves. Click a tape to play that section.
+Nash Carroll's portfolio: static pages on a Swiss grid, built by [Astro](https://astro.build) and served by a
+Cloudflare Worker. The site started as a three.js entertainment center of VHS tapes; that scene now lives on
+the Making Of page.
 
 ## Develop
 
     npm install
     npm run dev
 
+Needs Node 20.3 or newer. (Astro is pinned to version 5 for that reason; newer Astro needs Node 22.)
+
 ## Where things live
 
-- `index.html`: the content of each tape, in `<template id="tape-{id}">` blocks
-- `src/tapes.js`: tape labels, colors and order
-- `src/eggs.js`: the side-shelf easter eggs and their sticky-note text
-- `src/props.js`: the entertainment center, TV, VCR and prop models
-- `src/main.js`: scene setup, clicking, and the insert/eject animations
-- `public/demos/scoreplus/`: standalone ScorePlus simulator (also loaded in an iframe on its tape)
+- `src/data/tapes.js`: the pages: names, roles and years for the home index, descriptions for search and
+  link previews, and the label text and colors for the tapes on the 3D shelf
+- `src/pages/{id}.astro`: each page's content; `index.astro` is the home page, `404.astro` the not-found page
+- `src/layouts/Base.astro`: the `<head>`, top bar and footer every page shares
+- `src/layouts/Page.astro`: a content page: title, facts, lede, sections, Next link
+- `src/styles/global.css`: all styling; colors, font and spacing are the variables at the top (see `DESIGN.md`)
+- `src/data/eggs.js`: the personal notes (the home page's "Off the clock" and the objects on the 3D shelf)
+- `src/scene/`: the 3D shelf; `src/scripts/shelf.js` loads it on the Making Of page
+- `src/scripts/app.js`: the footer's "now playing" line
+- `public/demos/scoreplus/`: standalone ScorePlus simulator (also embedded on its page)
 - `public/resume.pdf`: drop your resume here
 
-Deep links: `/#/about`, `/#/scoreplus`, `/#/cinja`, `/#/resume`, `/#/contact` open that tape directly.
+### Add a project
+
+1. Add an entry to `src/data/tapes.js` with `work: true`, a `role`, a `year` and a one-line `summary`.
+2. Create `src/pages/{id}.astro` (copy `cinja.astro`).
+3. Run `npm run og` to draw its link-preview image.
+
+The home index, the Next links and the tapes on the 3D shelf all follow `tapes.js`.
+
+## Link previews
+
+`npm run og` draws one preview image per page into `public/og/` (commit them). For previews to work on
+LinkedIn, Slack and the like, the build needs the site's public address: set a `SITE_URL` build variable
+in Cloudflare (for example `https://your-domain.com`), or put it in `astro.config.mjs`.
 
 ## Deploy (Cloudflare Worker)
 
@@ -26,10 +46,13 @@ in `worker/index.js`. With Workers Builds connected to this repo, every push to 
 
 - Build command: `npm run build`
 - Deploy command: `npx wrangler deploy`
+- Build variable: `SITE_URL` (see Link previews)
 
 CLI alternative: `npm run build && npx wrangler deploy`
 
-## Spotify "now playing" (the mixtape on the left shelf)
+Links from the first version (`/#/scoreplus`) redirect to the matching page.
+
+## Spotify "now playing" (the footer line and the mixtape on the 3D shelf)
 
 `worker/index.js` needs three secrets: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`.
 

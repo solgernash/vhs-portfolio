@@ -1,0 +1,24 @@
+---
+// Served for any address that isn't a page (wrangler.jsonc: not_found_handling).
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { WORK, tapeUrl } from '../data/tapes.js';
+---
+<Base title="Not found — Nash Carroll" description="That page doesn't exist." noindex>
+  <article class="wrap page">
+    <header class="title">
+      <h1>Not found.</h1>
+      <div class="lede"><p>That address isn't on this site. It may have moved, or the link was mistyped.</p></div>
+    </header>
+    <section class="sec">
+      <h2>Try</h2>
+      <div class="sec-body">
+        <ul class="links">
+          <li><a href="/"><Icon name="back" /> Home</a></li>
+          {WORK.map((p) => <li><a href={tapeUrl(p.id)}>{p.name}</a></li>)}
+          <li><a href="/resume/">Resume</a></li>
+        </ul>
+      </div>
+    </section>
+  </article>
+</Base>

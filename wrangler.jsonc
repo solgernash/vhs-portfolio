@@ -6,7 +6,9 @@
   "compatibility_date": "2026-05-01",
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Unknown addresses get src/pages/404.astro with a 404 status.
+    "not_found_handling": "404-page"
   },
   "observability": { "enabled": true }
 }

@@ -1,0 +1,76 @@
+---
+import Page from '../layouts/Page.astro';
+---
+<Page id="scoreplus" heading="ScorePlus" facts={[
+  ['Role', 'Sole developer'],
+  ['Where', 'Lynx System Developers'],
+  ['When', 'Summer 2024'],
+  ['Stack', 'Node.js, Express, Socket.io, Handlebars, TCP, NSIS'],
+]}>
+  <Fragment slot="lede">
+    <p>
+      A browser-based control panel for LED stadium video displays. Operators run the game clock,
+      scores and team colors from a laptop, and the board updates live. I built it as the sole
+      developer during my internship, and it shipped to clients who purchased the scoreboards.
+    </p>
+  </Fragment>
+
+  <section class="sec">
+    <h2>Try it</h2>
+    <figure class="wide demo">
+      <iframe src="/demos/scoreplus/index.html" title="ScorePlus interactive demo" loading="lazy"></iframe>
+      <figcaption>
+        Interactive recreation. The production code is proprietary, so this demo was rebuilt from
+        scratch to run entirely in your browser. The real app sends this state to the physical
+        display. <a href="/demos/scoreplus/index.html" target="_blank" rel="noopener">Open full screen</a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="sec">
+    <h2>The problem</h2>
+    <div class="sec-body">
+      <p>
+        Customers buying Lynx LED displays needed a simple way to run them during a game across
+        several sports, from one browser window and without training on the display software.
+      </p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>How it works</h2>
+    <div class="sec-body">
+      <ol class="flow" aria-label="System architecture">
+        <li><strong>Operator UI</strong><span>Browser on the scorer's laptop</span></li>
+        <li><strong>Node + Express</strong><span>Socket.io keeps every open panel in sync</span></li>
+        <li><strong>Lynx scripting</strong><span>State is turned into commands in Lynx's proprietary display language</span></li>
+        <li><strong>LED display</strong><span>Football, soccer, basketball, cross-country</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Decisions I'm proud of</h2>
+    <div class="sec-body">
+      <ul>
+        <li><strong>Server owns the clock.</strong> The game state lives on the Node process and is
+          persisted, so a refreshed or closed browser tab never loses the score.</li>
+        <li><strong>One-click Windows installer.</strong> NSIS package that bundles the Node runtime,
+          so non-technical clients install it offline without touching a terminal.</li>
+        <li><strong>Per-sport modes.</strong> Count-up vs. count-down clocks, periods vs. halves, and a
+          cross-country timing mode share one UI.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>My role</h2>
+    <div class="sec-body">
+      <p>
+        Designed, built, packaged and supported the app in production as the sole designer and
+        engineer. I partnered with product managers to define scope, prioritize features and prepare
+        it for release.
+      </p>
+    </div>
+  </section>
+</Page>

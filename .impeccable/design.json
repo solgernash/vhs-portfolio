@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T19:20:39.372Z",
+  "title": "Design System: Nash Carroll — Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink"
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2"
+      },
+      "hair": {
+        "role": "neutral",
+        "displayName": "Hair"
+      },
+      "signal": {
+        "role": "primary",
+        "displayName": "Signal red"
+      }
+    },
+    "typographyMeta": {
+      "poster": {
+        "displayName": "Poster",
+        "purpose": "The name on the home page."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page titles."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Index rows, Next link, footer email."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text, max 66ch."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "View transitions (0.42s) and hovers (0.2-0.25s)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "899px"
+      },
+      {
+        "name": "narrow",
+        "value": "520px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Index row",
+      "kind": "custom",
+      "refersTo": "index-row",
+      "description": "A project in the home index.",
+      "html": "<a class=\"ds-row\"><strong>ScorePlus</strong><span>Sole developer, Lynx</span><span>2024</span><span>→</span></a>",
+      "css": ".ds-row{display:grid;grid-template-columns:5fr 4fr 2fr 1fr;gap:24px;align-items:baseline;padding:22px 0 24px;border-top:1px solid #111;border-bottom:1px solid #111;color:#111;text-decoration:none;font-family:'Schibsted Grotesk',Arial,sans-serif;font-size:18px}.ds-row strong{font-size:48px;font-weight:700;letter-spacing:-.035em;line-height:1}.ds-row:hover strong{color:#cf2a15}"
+    },
+    {
+      "name": "Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "The one solid action on a page.",
+      "html": "<a class=\"ds-btn\">Download PDF ↓</a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:.6em;height:52px;padding:0 22px;background:#111;color:#f4f4f1;font:600 18px 'Schibsted Grotesk',Arial,sans-serif;text-decoration:none}.ds-btn:hover{background:#cf2a15}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The poster that is also the index",
+    "overview": "International Typographic Style applied to a portfolio: a 12-column grid, one grotesk, black rules, one red.",
+    "keyCharacteristics": [
+      "Light paper, black ink, one red",
+      "One family from regular to black",
+      "2px rules open blocks, 1px rules divide rows",
+      "No cards, radii, shadows or decorative icons"
+    ],
+    "rules": [
+      {
+        "name": "The One Red Rule",
+        "body": "Red marks the one live or actionable thing on a screen.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Keep everything on the 12-column grid.",
+      "Open every block with a 2px rule."
+    ],
+    "donts": [
+      "Add cards, rounded corners, shadows or a second typeface.",
+      "Put a label above a page title."
+    ]
+  }
+}

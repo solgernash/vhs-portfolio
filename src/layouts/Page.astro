@@ -1,0 +1,39 @@
+---
+// A content page: the title block (huge title on the left, facts on the right), then the page's sections,
+// then a link to the next page. Each section is <section class="sec"><h2>…</h2><div class="sec-body">…</div></section>:
+// the heading sits in the left columns and the text in the middle ones.
+// Props: `id` (an entry in src/data/tapes.js), `heading` (the page's <h1>), `facts` ([label, value] pairs).
+import Base from './Base.astro';
+import Icon from '../components/Icon.astro';
+import { TAPES, tapeById, tapeUrl } from '../data/tapes.js';
+
+const { id, heading, facts = [] } = Astro.props;
+const page = tapeById(id);
+const order = TAPES.filter((t) => t.id !== 'about');
+const next = page.work ? order[(order.indexOf(page) + 1) % order.length] : null;
+---
+<Base title={id === 'about' ? 'About — Nash Carroll' : `${page.name} — Nash Carroll`} description={page.description} image={`/og/${id}.png`} current={id}>
+  <article class="wrap page">
+    <header class="title">
+      <h1 style={`view-transition-name: t-${id}`}>{heading}</h1>
+      {facts.length > 0 && (
+        <dl class="facts">
+          {facts.map(([label, value]) => (<div><dt>{label}</dt><dd set:html={value} /></div>))}
+        </dl>
+      )}
+      {Astro.slots.has('lede') && <div class="lede"><slot name="lede" /></div>}
+    </header>
+
+    <slot />
+  </article>
+
+  {next && (
+    <nav class="wrap next" aria-label="Next">
+      <a href={tapeUrl(next.id)}>
+        <span>Next</span>
+        <strong>{next.name}</strong>
+        <Icon name="next" />
+      </a>
+    </nav>
+  )}
+</Base>

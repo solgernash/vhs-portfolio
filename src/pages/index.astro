@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { WORK, tapeUrl } from '../data/tapes.js';
+import { EGGS } from '../data/eggs.js';
+
+const offClock = ['Ballroom', 'Spanish', 'Running', 'Games', 'Anime'].map((topic) => EGGS.find((e) => e.topic === topic));
+const photo = EGGS.find((e) => e.kind === 'polaroid');
+---
+<Base
+  title="Nash Carroll — Software engineer"
+  description="Nash Carroll, software engineer: real-time web apps and XR tools. ScorePlus, Cinema Ninja, XR lab work, resume and contact."
+  current="home"
+>
+  <div class="wrap">
+    <header class="hero">
+      <h1>Nash<br />Carroll</h1>
+      <div class="hero-intro">
+        <p>
+          Software engineer. M.S. in Computer Science at the University of Georgia, May 2027.
+          I build real-time web apps and XR tools that people actually use.
+        </p>
+        <p class="signal">Open to software engineering roles.</p>
+        <p class="hero-links"><a href="/resume/">Resume</a> <a href="/contact/">Contact</a></p>
+      </div>
+    </header>
+
+    <section class="index" id="work" aria-labelledby="work-title">
+      <h2 class="index-title" id="work-title">Selected work</h2>
+      <ol class="rows">
+        {WORK.map((p) => (
+          <li>
+            <a class="row" href={tapeUrl(p.id)}>
+              <strong style={`view-transition-name: t-${p.id}`}>{p.name}</strong>
+              <span class="row-role">{p.role}</span>
+              <span class="row-sum">{p.summary}</span>
+              <span class="row-year">{p.year}</span>
+              <Icon name="next" />
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="index" aria-labelledby="clock-title">
+      <h2 class="index-title" id="clock-title">Off the clock</h2>
+      <div class="clock">
+        <dl class="notes">
+          {offClock.map((egg) => (
+            <div><dt>{egg.topic}</dt><dd>{egg.note}</dd></div>
+          ))}
+        </dl>
+        <figure class="clock-photo">
+          <img src={photo.image} alt={photo.alt} width="480" height="640" loading="lazy" decoding="async" />
+          <figcaption>{photo.note}</figcaption>
+        </figure>
+      </div>
+    </section>
+  </div>
+</Base>

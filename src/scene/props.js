@@ -246,7 +246,7 @@ export function buildTape(tape) {
 }
 
 // ---------- wall decor ----------
-export function buildDecor() {
+export function buildDecor(tapeCount) {
   const g = new THREE.Group();
   const wallZ = -U.d / 2 - 0.01;
 
@@ -262,7 +262,7 @@ export function buildDecor() {
   const frame = std({ color: '#141216', roughness: 0.5 });
   const posterY = SIDE_TOP + 0.25;
   const posterFrame = box(0.29, 0.39, 0.02, frame, 0.53, posterY, wallZ + 0.01);
-  const poster = new THREE.Mesh(new THREE.PlaneGeometry(0.265, 0.365), std({ map: T.makePoster(), roughness: 0.6 }));
+  const poster = new THREE.Mesh(new THREE.PlaneGeometry(0.265, 0.365), std({ map: T.makePoster(tapeCount), roughness: 0.6 }));
   poster.position.set(0.53, posterY, wallZ + 0.021);
 
   // Small succulent next to the tapes on the top shelf.

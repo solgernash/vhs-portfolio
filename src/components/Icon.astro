@@ -1,0 +1,11 @@
+---
+// Arrows, drawn on a 16px grid with square ends to match the grotesk's strokes.
+const paths = {
+  next: 'M1 7h10.6L7.3 2.7l1.4-1.4L15.4 8l-6.7 6.7-1.4-1.4L11.6 9H1z',
+  out: 'M4 2h10v10h-2V5.4l-8.3 8.3-1.4-1.4L10.6 4H4z',
+  down: 'M7 1h2v9.6l3.3-3.3 1.4 1.4L8 14.4 2.3 8.7l1.4-1.4L7 10.6zM1 14h14v2H1z',
+  back: 'M15 7H4.4l4.3-4.3-1.4-1.4L.6 8l6.7 6.7 1.4-1.4L4.4 9H15z',
+};
+const { name } = Astro.props;
+---
+<svg class="icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d={paths[name]} fill="currentColor" /></svg>
