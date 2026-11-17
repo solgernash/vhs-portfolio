@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Astro 5 (static output) with a three.js scene, deployed as a Cloudflare Worker with static assets.
+Astro 5 (static output) with a three.js scene, deployed on Cloudflare Pages (static files plus one Pages Function).
 Astro 5 was chosen because the development machine runs Node 20.17; newer Astro needs Node 22.
 
 ## Users
@@ -41,7 +41,7 @@ page as a piece of work in its own right.
 ## Capabilities and Constraints
 
 - Pages: Home, About, ScorePlus, Cinema Ninja, XR Lab, Resume, Contact, Making Of.
-- The footer shows what Nash is listening to through `/api/now-playing` (Cloudflare Worker, Spotify API).
+- The footer shows what Nash is listening to through `/api/now-playing` (Cloudflare Pages Function, Spotify API).
 - Making Of embeds the original three.js shelf; its objects open notes about Nash.
 - ScorePlus production code is proprietary. The demo on its tape is a from-scratch recreation and must
   stay labeled as one.
