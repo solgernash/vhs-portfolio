@@ -1,0 +1,78 @@
+---
+// Every page: the <head>, the top bar and the footer.
+import '@fontsource-variable/schibsted-grotesk/wght.css';
+import '../styles/global.css';
+import fontUrl from '@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url';
+import Icon from '../components/Icon.astro';
+import { TAPES } from '../data/tapes.js';
+
+const { title, description, image = '/og/home.png', noindex = false, current } = Astro.props;
+const abs = (path) => (Astro.site ? new URL(path, Astro.site).href : path);
+const tapeIds = TAPES.map((t) => t.id);
+const nav = [
+  ['/#work', 'Work', ['scoreplus', 'cinja', 'xr', 'making-of']],
+  ['/resume/', 'Resume', ['resume']],
+  ['/contact/', 'Contact', ['contact']],
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#f4f4f1" />
+  {noindex && <meta name="robots" content="noindex" />}
+  {Astro.site && !noindex && <link rel="canonical" href={abs(Astro.url.pathname)} />}
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Nash Carroll" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={abs(image)} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  {Astro.site && <meta property="og:url" content={abs(Astro.url.pathname)} />}
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" as="font" type="font/woff2" href={fontUrl} crossorigin />
+  <script is:inline define:vars={{ tapeIds }}>
+    // Links from the first version of the site looked like /#/scoreplus.
+    var old = location.pathname === '/' && location.hash.match(/^#\/([a-z-]+)$/);
+    if (old && tapeIds.indexOf(old[1]) !== -1) location.replace('/' + old[1] + '/');
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="bar wrap">
+    <a class="bar-name" href="/" aria-current={current === 'home' ? 'page' : undefined}>Nash Carroll</a>
+    <nav aria-label="Site">
+      <ul>
+        {nav.map(([href, label, ids]) => (
+          <li><a href={href} aria-current={ids.includes(current) ? 'page' : undefined}>{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1"><slot /></main>
+
+  <footer class="foot wrap">
+    <div class="foot-cta">
+      <p>Open to software engineering roles from May 2027.</p>
+      <a class="foot-mail" href="mailto:Ethan.Carroll@UGA.edu">Ethan.Carroll@UGA.edu <Icon name="next" /></a>
+    </div>
+    <ul class="foot-links">
+      <li><a href="https://www.linkedin.com/in/ethan-nash-carroll" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://github.com/solgernash" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="/resume.pdf" download="Nash_Carroll_Resume.pdf">Resume PDF</a></li>
+      <li><a href="/making-of/">Making Of</a></li>
+    </ul>
+    <p class="foot-now" id="now-playing" hidden></p>
+  </footer>
+
+  <script>
+    import '../scripts/app.js';
+  </script>
+</body>
+</html>

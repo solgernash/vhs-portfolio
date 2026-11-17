@@ -1,0 +1,46 @@
+---
+import Page from '../layouts/Page.astro';
+import Icon from '../components/Icon.astro';
+---
+<Page id="cinja" heading="Cinema Ninja" facts={[
+  ['Role', 'Front-end lead, ticket-purchasing flow'],
+  ['Team', 'Five students, CSCI 4050 Software Engineering'],
+  ['When', 'Summer 2026'],
+  ['Stack', 'Java 21, Spring Boot, MongoDB, vanilla JS, Jira'],
+]}>
+  <Fragment slot="lede">
+    <p>
+      A full-stack movie ticket booking system: browse and search movies, pick a showtime, choose
+      seats on a live seat map, and check out. Includes an admin portal for movies and showtimes.
+    </p>
+    <p><a class="button" href="https://github.com/solgernash/cinja-box-office" target="_blank" rel="noopener">View the code on GitHub <Icon name="out" /></a></p>
+  </Fragment>
+
+  {/* Screenshots go here. Put images in public/cinja/ and add a section:
+      <section class="sec"><h2>Seat map</h2><figure class="wide shot"><img src="/cinja/seat-map.png" alt="..." width="1600" height="1000" /><figcaption>...</figcaption></figure></section> */}
+
+  <section class="sec">
+    <h2>My role</h2>
+    <div class="sec-body">
+      <p>
+        I led front-end development of the ticket-purchasing flow (showtime, ticket counts, seat map,
+        checkout) and contributed to the account, home and search interfaces. We coordinated the
+        five-person team through Jira and GitHub. Built with Chloe Malimban, Ido Niv, Joshua Lumogdang
+        and Abhinav Aravind for CSCI 4050 Software Engineering.
+      </p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Highlights</h2>
+    <div class="sec-body">
+      <ul>
+        <li>Seat map with real-time availability, capped to the number of tickets chosen</li>
+        <li>Guests can browse and pick seats; login is only required at checkout</li>
+        <li>Showtime scheduling with conflict detection per showroom, date and time</li>
+        <li>Builder pattern (<code>BookingBuilder</code>) and Facade (<code>CheckoutFacade</code>) in the booking pipeline</li>
+        <li>Account management: saved cards, addresses, favorites, order history, password reset by email</li>
+      </ul>
+    </div>
+  </section>
+</Page>

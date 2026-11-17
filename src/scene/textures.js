@@ -242,7 +242,9 @@ export function makeNeon(lines, color) {
   return canvasTexture(c);
 }
 
-export function makePoster() {
+const COUNT_WORDS = ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN'];
+
+export function makePoster(tapeCount = 5) {
   const c = document.createElement('canvas');
   c.width = 600;
   c.height = 840;
@@ -290,7 +292,7 @@ export function makePoster() {
   g.fillText('CARROLL', 300, 680);
   g.fillStyle = '#c9b8e6';
   g.font = '34px VT323, monospace';
-  g.fillText('A PORTFOLIO IN FIVE TAPES', 300, 750);
+  g.fillText(`A PORTFOLIO IN ${COUNT_WORDS[tapeCount] ?? tapeCount} TAPES`, 300, 750);
   g.fillText('RATED PG · BE KIND, REWIND', 300, 790);
   return canvasTexture(c);
 }

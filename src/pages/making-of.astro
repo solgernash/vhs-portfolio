@@ -1,0 +1,86 @@
+---
+import Page from '../layouts/Page.astro';
+import { EGGS } from '../data/eggs.js';
+// Fonts the 3D shelf paints onto its labels, poster and VCR display. Only this page loads them.
+import '@fontsource/vt323/latin-400.css';
+import '@fontsource/permanent-marker/latin-400.css';
+import '@fontsource/sacramento/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-600.css';
+---
+<Page id="making-of" heading="Making Of" facts={[
+  ['Pages', 'Astro, static HTML'],
+  ['Hosting', 'Cloudflare Workers'],
+  ['First version', 'three.js, GLSL, Canvas 2D'],
+]}>
+  <Fragment slot="lede">
+    <p>
+      This site is plain static pages set on a Swiss grid. It started as something much louder: a 3D
+      entertainment center where every section was a VHS tape you put in a VCR. That version still
+      runs below.
+    </p>
+  </Fragment>
+
+  <section class="sec">
+    <h2>The shelf</h2>
+    <figure class="shelf-fig" data-shelf>
+      <div class="shelf-stage">
+        <canvas aria-label="3D model of an entertainment center with VHS tapes, a TV, a VCR and personal objects on the shelves"></canvas>
+        <p class="shelf-cue">Loading the shelf</p>
+      </div>
+      <p class="shelf-note" aria-live="polite">Click a tape to open its page, or anything on the side shelves to read its note.</p>
+      <div class="shelf-keys" role="group" aria-label="Objects on the side shelves">
+        {EGGS.map((egg, i) => egg.note && <button type="button" data-egg={i} aria-pressed="false">{egg.label}</button>)}
+      </div>
+    </figure>
+  </section>
+
+  <section class="sec">
+    <h2>Modeled in code</h2>
+    <div class="sec-body">
+      <p>
+        There are no model files. The unit, the TV and the VCR are boxes and rounded boxes. The shoes are
+        lofted from cross-sections written out by hand, the straw hat is a profile spun around an axis,
+        and the controller is an outline extruded and beveled. Laces and cords are tubes run along curves.
+      </p>
+      <p>
+        Almost nothing is an image either. The tape labels, the wood grain, the neon sign, the poster and
+        the VCR's display are painted onto 2D canvases when the page loads, then used as textures. The one
+        photograph is the polaroid. The CRT is a small GLSL shader that bulges the picture, splits the
+        color channels by a hair and draws scanlines; the VCR's clock shows your local time.
+      </p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Why it changed</h2>
+    <div class="sec-body">
+      <p>
+        The shelf was fun to build and slow to use. Every page sat behind an animation, the text had to
+        compete with a room full of props, and on a phone the shelf was small and the buttons were
+        crowded. The work is the point, so the site now leads with it: a name, a list of projects, and
+        pages you can read and link to. The shelf moved here, where it is the thing being shown.
+      </p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>How it's built</h2>
+    <div class="sec-body">
+      <ol class="flow" aria-label="How the site is built">
+        <li><strong>Astro</strong><span>Every page is static HTML with its own address and link preview</span></li>
+        <li><strong>One grid</strong><span>Twelve columns, one typeface, one accent color</span></li>
+        <li><strong>View transitions</strong><span>A project's name grows into its page title</span></li>
+        <li><strong>Worker</strong><span>Serves the pages and asks Spotify what I'm playing</span></li>
+      </ol>
+      <p>
+        The footer's "now playing" line comes from a Cloudflare Worker that asks Spotify with a refresh
+        token it keeps as a secret, and caches the answer for 30 seconds. The link-preview images are drawn
+        in code at build time from the same list of pages the site is built from.
+      </p>
+    </div>
+  </section>
+</Page>
+
+<script>
+  import '../scripts/shelf.js';
+</script>

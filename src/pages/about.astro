@@ -1,0 +1,50 @@
+---
+import Page from '../layouts/Page.astro';
+---
+<Page id="about" heading="Hi, I'm Nash." facts={[
+  ['Studying', 'M.S. Computer Science, University of Georgia, May 2027'],
+  ['Also', 'B.A. Spanish, May 2027'],
+  ['Looking for', 'Full-stack, real-time and 3D/XR roles'],
+]}>
+  <Fragment slot="lede">
+    <p>
+      I'm a computer science grad student at the University of Georgia who builds software people
+      actually use, from a scoreboard app shipped at Lynx System Developers to VR and 3D tools for
+      healthcare education.
+    </p>
+  </Fragment>
+
+  <section class="sec">
+    <h2>What I build</h2>
+    <div class="sec-body">
+      <ul>
+        <li><strong>Software that ships.</strong> Real users, real installers, real support.</li>
+        <li><strong>Real-time systems.</strong> Browsers driving LED video displays live.</li>
+        <li><strong>3D and XR.</strong> A digital-patient module and markerless motion capture at UGA's Virtual Experiences Lab.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Off the clock</h2>
+    <div class="sec-body">
+      <ul>
+        <li>President of the Ballroom Dance Club at UGA (2024–2026)</li>
+        <li>Finishing a B.A. in Spanish alongside my CS degrees</li>
+        <li>Music, and collecting VHS tapes</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Start here</h2>
+    <div class="sec-body">
+      <ul class="links">
+        <li><a href="/scoreplus/">ScorePlus</a></li>
+        <li><a href="/cinja/">Cinema Ninja</a></li>
+        <li><a href="/xr/">XR Lab</a></li>
+        <li><a href="/resume/">Resume</a></li>
+      </ul>
+    </div>
+  </section>
+</Page>

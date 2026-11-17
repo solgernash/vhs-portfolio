@@ -1,0 +1,28 @@
+---
+import Page from '../layouts/Page.astro';
+import Icon from '../components/Icon.astro';
+---
+<Page id="contact" heading="Let's talk." facts={[
+  ['Available', 'May 2027'],
+  ['Looking for', 'Software engineering: full-stack, real-time, 3D/XR'],
+]}>
+  <Fragment slot="lede">
+    <p>
+      I'm finishing my M.S. in Computer Science at UGA (May 2027) and looking for software
+      engineering roles, especially full-stack, real-time and 3D/XR work. Email is the fastest way to reach me.
+    </p>
+    <p><a class="button" href="mailto:Ethan.Carroll@UGA.edu">Email me <Icon name="next" /></a></p>
+  </Fragment>
+
+  <section class="sec">
+    <h2>Elsewhere</h2>
+    <div class="sec-body">
+      <ul class="links">
+        <li><a href="https://www.linkedin.com/in/ethan-nash-carroll" target="_blank" rel="noopener">LinkedIn <Icon name="out" /></a></li>
+        <li><a href="https://github.com/solgernash" target="_blank" rel="noopener">GitHub <Icon name="out" /></a></li>
+        <li><a href="/resume/">Resume</a></li>
+        <li><a href="/resume.pdf" download="Nash_Carroll_Resume.pdf">Resume PDF <Icon name="down" /></a></li>
+      </ul>
+    </div>
+  </section>
+</Page>

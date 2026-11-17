@@ -1,0 +1,53 @@
+---
+import Page from '../layouts/Page.astro';
+---
+<Page id="xr" heading="XR Lab" facts={[
+  ['Role', 'Graduate assistant'],
+  ['Where', 'Virtual Experiences Lab and College of Pharmacy, UGA'],
+  ['When', 'June 2025 – present'],
+  ['Tools', 'SAM 3D, Meta Quest 3, VR/AR'],
+]}>
+  <Fragment slot="lede">
+    <p>
+      Since June 2025 I've been a graduate assistant on immersive technology for healthcare education
+      at the University of Georgia: building VR software at the Virtual Experiences Lab, and keeping
+      the College of Pharmacy's headsets in students' hands.
+    </p>
+  </Fragment>
+
+  {/* Screenshots or clips go here. Put files in public/xr/ and add:
+      <figure class="wide shot"><img src="/xr/patient.png" alt="..." width="1600" height="1000" /><figcaption>...</figcaption></figure> */}
+
+  <section class="sec">
+    <h2>Digital patient</h2>
+    <div class="sec-body">
+      <p>
+        At the Virtual Experiences Lab I develop an interactive digital-patient module: the user
+        assesses a simulated patient and works toward a diagnosis.
+      </p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Markerless motion capture</h2>
+    <div class="sec-body">
+      <p>
+        I built a motion-capture workflow on SAM 3D that reconstructs human movement in a virtual
+        environment, with no markers on the performer.
+      </p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>A classroom of headsets</h2>
+    <div class="sec-body">
+      <p>As Graduate Assistant for Immersive Technology at the College of Pharmacy (June 2025 – June 2026):</p>
+      <ul>
+        <li>Supported 900+ students and helped faculty adopt VR/AR tools through training resources,
+          technical guides and hands-on assistance.</li>
+        <li>Built a device-ID asset-tracking system to improve equipment inventory and accountability.</li>
+        <li>Managed Meta Quest 3 maintenance, inventory, storage and classroom deployment.</li>
+      </ul>
+    </div>
+  </section>
+</Page>
