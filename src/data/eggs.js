@@ -8,7 +8,7 @@
 // note:  sticky-note text. Leave it out to make an item decoration only.
 // tape:  optional, adds a "Play tape" link to that tape's page.
 // image: optional photo shown large in the note (alt text in `alt`).
-// live:  'spotify' swaps the note for what's playing (worker/index.js); `note` is the fallback.
+// live:  'spotify' swaps the note for what's playing (functions/api/now-playing.js); `note` is the fallback.
 export const EGGS = [
   { kind: 'cassette', label: 'Mixtape', spot: 'L1', x: 0, rot: 0.18, title: 'MIXTAPE', sub: 'Vol. 1', stripe: '#e5484d',
     live: 'spotify', note: "The mixtape's rewinding. Check back in a bit." },

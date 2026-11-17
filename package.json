@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "preview:cf": "astro build && wrangler dev",
+    "preview:cf": "astro build && wrangler pages dev",
     "og": "node scripts/og.mjs",
     "spotify:auth": "node scripts/spotify-auth.mjs"
   },

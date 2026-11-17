@@ -1,14 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // Must match the Worker's name in the Cloudflare dashboard.
+  // Cloudflare Pages project. `name` must match the project's name in the dashboard.
+  // Pages serves dist/ as static files (404.html for unknown addresses, _headers for headers)
+  // and runs functions/ as the API: functions/api/now-playing.js answers /api/now-playing.
   "name": "vhs-portfolio",
-  "main": "worker/index.js",
-  "compatibility_date": "2026-05-01",
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    // Unknown addresses get src/pages/404.astro with a 404 status.
-    "not_found_handling": "404-page"
-  },
-  "observability": { "enabled": true }
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-05-01"
 }

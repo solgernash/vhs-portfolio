@@ -9,7 +9,7 @@ import '@fontsource/ibm-plex-mono/latin-600.css';
 ---
 <Page id="making-of" heading="Making Of" facts={[
   ['Pages', 'Astro, static HTML'],
-  ['Hosting', 'Cloudflare Workers'],
+  ['Hosting', 'Cloudflare Pages'],
   ['First version', 'three.js, GLSL, Canvas 2D'],
 ]}>
   <Fragment slot="lede">
@@ -70,10 +70,10 @@ import '@fontsource/ibm-plex-mono/latin-600.css';
         <li><strong>Astro</strong><span>Every page is static HTML with its own address and link preview</span></li>
         <li><strong>One grid</strong><span>Twelve columns, one typeface, one accent color</span></li>
         <li><strong>View transitions</strong><span>A project's name grows into its page title</span></li>
-        <li><strong>Worker</strong><span>Serves the pages and asks Spotify what I'm playing</span></li>
+        <li><strong>Pages Function</strong><span>One small server route asks Spotify what I'm playing</span></li>
       </ol>
       <p>
-        The footer's "now playing" line comes from a Cloudflare Worker that asks Spotify with a refresh
+        The footer's "now playing" line comes from a Cloudflare Pages Function that asks Spotify with a refresh
         token it keeps as a secret, and caches the answer for 30 seconds. The link-preview images are drawn
         in code at build time from the same list of pages the site is built from.
       </p>

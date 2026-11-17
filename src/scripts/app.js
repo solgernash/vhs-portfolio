@@ -1,5 +1,5 @@
 // Runs on every page. The pages are complete as plain HTML; this only adds the "now playing" line to
-// the footer, from the Spotify mixtape Worker (worker/index.js). Without the Worker it stays hidden.
+// the footer, from the Spotify function (functions/api/now-playing.js). Without it the line stays hidden.
 
 const line = document.getElementById('now-playing');
 const CACHE_KEY = 'now-playing';
